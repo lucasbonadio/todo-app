@@ -1,4 +1,3 @@
-// src/components/tasks/TaskList.tsx
 import { Task } from "@/types";
 import { TaskItem } from "./TaskItem";
 

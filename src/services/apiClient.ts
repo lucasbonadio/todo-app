@@ -1,5 +1,3 @@
-// src/services/apiClient.ts
-
 const API_BASE_URL = 'https://todoappapi-production-06e5.up.railway.app/api';
 
 async function client<T>(endpoint: string, options?: RequestInit): Promise<T> {

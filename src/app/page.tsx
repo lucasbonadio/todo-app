@@ -7,7 +7,7 @@ import {
   updateTask,
   createTask,
   deleteTask,
-} from "@/services/taskService"; // Importamos nossa função
+} from "@/services/taskService";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -21,6 +21,7 @@ export default function HomePage() {
         const data = await getTasks();
         setTasks(data);
       } catch (err) {
+        console.error("Falha ao buscar tarefas:", err); 
         setError(
           "Não foi possível carregar as tarefas. Verifique se a API está rodando."
         );

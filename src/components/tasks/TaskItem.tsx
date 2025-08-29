@@ -1,4 +1,3 @@
-// src/components/tasks/TaskItem.tsx
 import { Task } from "@/types";
 
 interface TaskItemProps {

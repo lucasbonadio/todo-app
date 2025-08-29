@@ -1,4 +1,4 @@
-"use client"; // Necessário para usar estado (useState)
+"use client";
 
 import { useState } from "react";
 interface AddTaskFormProps {
