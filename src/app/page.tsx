@@ -2,7 +2,12 @@
 import { AddTaskForm } from "@/components/tasks/addTaskForm";
 import { TaskList } from "@/components/tasks/TaskList";
 import { Task } from "@/types";
-import { getTasks, updateTask } from "@/services/taskService"; // Importamos nossa função
+import {
+  getTasks,
+  updateTask,
+  createTask,
+  deleteTask,
+} from "@/services/taskService"; // Importamos nossa função
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -42,13 +47,37 @@ export default function HomePage() {
 
     try {
       await updateTask(updatedTask);
-      console.log("sucesso")
     } catch (error) {
-      console.error('Falha ao atualizar a tarefa:', error);
-      alert('Não foi possível atualizar a tarefa. Tente novamente.');
+      console.error("Falha ao atualizar a tarefa:", error);
+      alert("Não foi possível atualizar a tarefa. Tente novamente.");
       setTasks((currentTasks) =>
         currentTasks.map((task) => (task.id === id ? taskToToggle : task))
       );
+    }
+  };
+
+  const handleAddTask = async (title: string) => {
+    try {
+      const newTaskData = { title, description: "", isCompleted: false };
+      const createdTask = await createTask(newTaskData);
+
+      setTasks((currentTasks) => [...currentTasks, createdTask]);
+    } catch (error) {
+      console.error("Falha ao criar a tarefa:", error);
+      alert("Não foi possível adicionar a tarefa. Tente novamente.");
+    }
+  };
+
+  const handleDeleteTask = async (id: number) => {
+    const originalTasks = [...tasks];
+    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
+
+    try {
+      await deleteTask(id);
+    } catch (error) {
+      console.error("Falha ao deletar a tarefa:", error);
+      alert("Não foi possível deletar a tarefa. Tente novamente.");
+      setTasks(originalTasks);
     }
   };
 
@@ -59,7 +88,13 @@ export default function HomePage() {
     if (error) {
       return <p className="text-center text-red-500">{error}</p>;
     }
-    return <TaskList tasks={tasks} onToggleTask={handleToggleTask} />;
+    return (
+      <TaskList
+        tasks={tasks}
+        onToggleTask={handleToggleTask}
+        onDeleteTask={handleDeleteTask}
+      />
+    );
   };
 
   return (
@@ -70,7 +105,7 @@ export default function HomePage() {
         </h1>
       </header>
 
-      <AddTaskForm />
+      <AddTaskForm onAddTask={handleAddTask} />
 
       {renderContent()}
     </main>
