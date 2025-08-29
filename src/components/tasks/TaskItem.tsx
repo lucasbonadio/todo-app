@@ -3,6 +3,7 @@ import { Task } from '@/types';
 
 interface TaskItemProps {
   task: Task;
+  onToggle: (id: number) => void;
 }
 
 const CheckIcon = () => (
@@ -22,10 +23,11 @@ const CheckIcon = () => (
   </svg>
 );
 
-export function TaskItem({ task }: TaskItemProps) {
+export function TaskItem({ task, onToggle }: TaskItemProps) {
   return (
     <div className="flex items-center py-4">
       <button
+        onClick={() => onToggle(task.id)}
         className={`cursor-pointer w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
           ${task.isCompleted
             ? 'bg-purple-600 border-purple-600'
